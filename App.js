@@ -75,16 +75,23 @@ return(
         style={styles.Button}
         onPress={async()=>{
           console.log('Login Button was pressed!')
-          await fetch('https://dev.stedi.me/twofactorlogin', 
+          const loginResonse=await fetch('https://dev.stedi.me/twofactorlogin', 
           {
             method:'POST',
             headers:{
               'content-type':'application/text'
-            }
-            body: 
+            },
+            body: JSON.stringify({
+              phoneNumber,
+              oneTimePassword
+            })
           }
-          )
-        setLoggedInState(loggedInStates.CODE_SENT);
+          );
+        if(loginResonse.status==200){
+          setLoggedInState(loggedInStates.LOGGED_IN);
+        }else{
+          setLoggedInState(NOT_LOGGED_IN);
+        }
       }}
       />
       </View>
