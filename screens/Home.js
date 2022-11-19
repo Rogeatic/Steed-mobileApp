@@ -7,7 +7,6 @@ import { LineChart} from 'react-native-chart-kit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-
 const Home = (props) => {
   const token = useRef("");
   const [score, setScore] = useState(0);
@@ -17,8 +16,8 @@ const Home = (props) => {
 const todayScore = async() =>{
   let scoreObject ={};
   try{
-    const sessionToken = await AsyncStorage.getItem('sessionToken');
-    const userName = await AsyncStorage.getItem('userName');
+    const sessionToken = await AsyncStorage.getItem('sessionToken'); // getting token from storage 
+    const userName = await AsyncStorage.getItem('userName'); // gets user name from storage 
     token.current = sessionToken;
     const scoreResponse = await fetch('https://dev.stedi.me/riskscore/'+userName,{
     method:'GET',
@@ -29,6 +28,8 @@ const todayScore = async() =>{
   })
   console.log('token:', token.current);
   scoreObject = await scoreResponse.json();
+  const scoreText = await scoreResponse.text();
+  console.log('scoreText', scoreText);
   setScore(scoreObject.score);
   console.log(scoreObject.score);
   }catch(error){
@@ -148,4 +149,3 @@ const styles = StyleSheet.create({
 
   }
 });
-
