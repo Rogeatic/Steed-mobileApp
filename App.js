@@ -6,6 +6,7 @@ import OnboardingScreen from './screens/OnboardingScreen';
 import Home from './screens/Home';
 import { NavigationContainer } from '@react-navigation/native';
 import { set } from 'react-native-reanimated';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const AppStack = createNativeStackNavigator();
