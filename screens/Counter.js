@@ -22,6 +22,15 @@ export default function Counter(props) {
  const [score, setScore] = useState(0);
 
  const [currentScreen, setCurrentScreen] = useState('counter');
+ useEffect(()=>{
+  const getUserName = async ()=>{
+    userName.current= await AsyncStorage.getItem('userName');
+    console.log('Counter userName',userName.current);    
+    token.current = await AsyncStorage.getItem('sessionToken');
+   console.log('counter token:' ,token.current);
+  };
+  getUserName();
+},[]);
 useEffect(()=>{
   if (currentScreen == 'counter'){
     if (completionCount == 1){
@@ -90,13 +99,8 @@ stepPoints  = [];
    previousTime = stepObject.time;
    stepPoints.push(stepTime);
 }); 
-stepPoints.length=30;
   try{
-    const sessionToken = await AsyncStorage.getItem('sessionToken');
-    const userName = await AsyncStorage.getItem('userName');
-    userName.current = userName;
-    token.current = sessionToken;
-    console.log('token:' ,token.current);
+    
     await fetch('https://dev.stedi.me/rapidsteptest',{
     method:'POST',
     headers:{
