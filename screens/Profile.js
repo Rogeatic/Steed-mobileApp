@@ -27,7 +27,7 @@ const Profile = (props) => {
   const[userName, setUserName] = useState("");
   const[profilePhoto, setProfilePhoto] = useState(null);
   const[cameraReady, setCameraReady] = useState(false);
-  const cameraRef = useRef(null)
+  const cameraRef = useRef(null);
 
   useEffect(()=>{
     const getUserInfo = async ()=>{
@@ -36,9 +36,8 @@ const Profile = (props) => {
       const userName = await AsyncStorage.getItem('userName');
       console.log('userName', userName);
       setUserName(userName);
-      await AsyncStorage.removeItem('profilePhoto')
+      // await AsyncStorage.removeItem('profilePhoto')
       const profilePhoto = await AsyncStorage.getItem('profilePhoto');
-      console.log('ProfilePhoto',profilePhoto)
       setProfilePhoto(profilePhoto);
     };
     getUserInfo();
@@ -93,8 +92,8 @@ else{
   elevation: 4}}>
     <CardContent>
     <Image style={{height: 100, width:100, borderRadius: 75}}
-    source={require('../image/me.jpg')} />
-    <Text style={{marginTop:10,marginBottom:10,fontWeight: 'bold'}}>Sarah Romero</Text>
+    source={{uri:profilePhoto}} />
+    <Text style={{marginTop:10,marginBottom:10,fontWeight: 'bold'}}>{userName}</Text>
 
     <Text style={{marginTop:20,marginBottom:2}}>This Week's progress</Text>
   {/* <BarChart barColor='green' data={data} horizontalData={horizontalData} /> */}
