@@ -1,12 +1,12 @@
 
-import React, { useEffect, useState, useRef} from 'react';
-import {TouchableOpacity, StyleSheet, Text, View, Image, SafeAreaView , Share, ScrollView, Button} from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { TouchableOpacity, StyleSheet, Text, View, Image, SafeAreaView , Share, ScrollView, Button} from 'react-native';
 import { Card, CardTitle, CardContent} from 'react-native-material-cards';
 import BarChart from 'react-native-bar-chart';
-import {Camera, CameraType} from 'expo-camera';
+import {Camera, CameraType} from 'expo-camera'; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import Share from 'react-native-share';
 
+// import Share from 'react-native-share';
 
 
 // const data = [
@@ -24,24 +24,25 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile = (props) => {
 
+  const[profilePhoto,setProfilePhoto] = useState(null);
   const[userName, setUserName] = useState("");
-  const[profilePhoto, setProfilePhoto] = useState(null);
   const[cameraReady, setCameraReady] = useState(false);
   const cameraRef = useRef(null);
 
   useEffect(()=>{
     const getUserInfo = async ()=>{
       const cameraPermission = await Camera.requestCameraPermissionsAsync();
-      //setCameraPermission(cameraPermission);
+      // setCameraPermission(cameraPermission);
+
       const userName = await AsyncStorage.getItem('userName');
-      console.log('userName', userName);
       setUserName(userName);
-      // await AsyncStorage.removeItem('profilePhoto')
+
       const profilePhoto = await AsyncStorage.getItem('profilePhoto');
       setProfilePhoto(profilePhoto);
-    };
+    }
     getUserInfo();
   },[]);
+
 
   const myCustomerShare = async() =>{
     const shareOptions = {
@@ -55,61 +56,63 @@ const Profile = (props) => {
   console.log('Error', error)
       }
     }
-if (profilePhoto==null){
-const cameraOptions={
-  quality:0,
-  exif:false
-}
 
-  return(
+if (profilePhoto == null){
+  const cameraOptions={
+    quality:0,
+    exif:false
+  }
+  return (
     <View style={styles.container}>
-      <Camera type = {CameraType.front} style={styles.camera} ref={cameraRef} onCameraReady={()=>{setCameraReady (true) }}>
+      <Camera type={CameraType.front} style={styles.camera} ref={cameraRef} onCameraReady={()=>{setCameraReady (true) }}>
         <View style={styles.buttonContainer}>
           {cameraReady?<TouchableOpacity style={styles.button} onPress={async ()=> {
-            const picture = await cameraRef.current.takePictureAsync (cameraOptions);
-            console. log ('Picture' ,picture);
-            await AsyncStorage. setItem('profilePhoto', picture.uri);
-            setProfilePhoto(picture.uri);
-            }}>
+          const picture = await cameraRef.current.takePictureAsync (cameraOptions);
+          console.log('Picture', picture);
+          await AsyncStorage.setItem('profilePhoto', picture.uri);
+          setProfilePhoto(picture.uri);
+          }}>
             <Text style={styles.text}>Take Picture</Text>
           </TouchableOpacity>: null}
         </View>
       </Camera>
     </View>
   );
-}
-else{
+} else{
+
   return (
     <SafeAreaView style={{flex: 1}}>
          <Card style={{backgroundColor:'white', borderRadius: 10, margin:20 ,width: 320, shadowColor: "#000",
-  shadowOffset: {
-    width: 0,
-    height: 2,
-  },
-  shadowOpacity: 0.23,
-  shadowRadius: 2.62,
+shadowOffset: {
+	width: 0,
+	height: 2,
+},
+shadowOpacity: 0.23,
+shadowRadius: 2.62,
 
-  elevation: 4}}>
-    <CardContent>
-    <Image style={{height: 100, width:100, borderRadius: 75}}
-    source={{uri:profilePhoto}} />
+elevation: 4}}>
+     <CardContent>
+     <Image style={{height: 100, width:100, borderRadius: 75}}
+      source={{uri:profilePhoto}} />
     <Text style={{marginTop:10,marginBottom:10,fontWeight: 'bold'}}>{userName}</Text>
 
     <Text style={{marginTop:20,marginBottom:2}}>This Week's progress</Text>
-  {/* <BarChart barColor='green' data={data} horizontalData={horizontalData} /> */}
-    <View style={{ marginTop: 50 }}>
-    <Button onPress={myCustomerShare} title="Share" />
+{/* <BarChart barColor='green' data={data} horizontalData={horizontalData} /> */}
+     <View style={{ marginTop: 50 }}>
+      <Button onPress={myCustomerShare} title="Share" />
     </View>
     </CardContent>
     </Card>
-    </SafeAreaView>
+ </SafeAreaView>
   );
 }
+// Where I added my curly brakcet haha. 
 };
 export default Profile;
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1,  
+    flex: 1,
     justifyContent: 'center',
     padding: 20
   },
